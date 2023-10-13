@@ -1,0 +1,102 @@
+# Configuration File: C:\Users\xz21360\CR code\CR_MSci_Lab\udaq\tools\udaq_per_channel.config
+
+[Run]
+Start Time: Fri Oct 13 14:32:09 2023
+Run Time (s): 600.0
+Events: 34900
+
+[Sampling]
+Pre-Trigger Window (s): 1.00e-07
+Post-Trigger Window (s): 1.00e-06
+Time Base: 2
+Sample Interval (ns): 0.8
+Samples Per Capture: 1374
+Captures Per Block: 100
+
+[Channel A]
+Coupling: DC_50OHM
+Polarity: -1
+Range: 0.5
+Baseline Correction: False
+Timing: PEAK
+Trigger Enabled: False
+Trigger Type: LEVEL
+Trigger Direction: BELOW
+Threshold (V): -0.0100
+
+[Channel B]
+Coupling: DC_50OHM
+Polarity: -1
+Range: 0.5
+Baseline Correction: False
+Timing: PEAK
+Trigger Enabled: False
+Trigger Type: LEVEL
+Trigger Direction: BELOW
+Threshold (V): -0.0100
+
+[Channel C]
+Coupling: DC_50OHM
+Polarity: -1
+Range: 0.5
+Baseline Correction: False
+Timing: PEAK
+Trigger Enabled: False
+Trigger Type: LEVEL
+Trigger Direction: BELOW
+Threshold (V): -0.0100
+
+[Channel D]
+Coupling: DC_50OHM
+Polarity: -1
+Range: 0.1
+Baseline Correction: False
+Timing: PEAK
+Trigger Enabled: True
+Trigger Type: LEVEL
+Trigger Direction: BELOW
+Threshold (V): -0.0100
+
+[Channel E]
+Coupling: DC_50OHM
+Polarity: -1
+Range: 0.5
+Baseline Correction: False
+Timing: PEAK
+Trigger Enabled: False
+Trigger Type: LEVEL
+Trigger Direction: BELOW
+Threshold (V): -0.0100
+
+[Channel F]
+Coupling: DC_50OHM
+Polarity: -1
+Range: 0.5
+Baseline Correction: False
+Timing: PEAK
+Trigger Enabled: False
+Trigger Type: LEVEL
+Trigger Direction: BELOW
+Threshold (V): -0.0100
+
+[Channel G]
+Coupling: DC_50OHM
+Polarity: -1
+Range: 0.5
+Baseline Correction: False
+Timing: PEAK
+Trigger Enabled: False
+Trigger Type: LEVEL
+Trigger Direction: BELOW
+Threshold (V): -0.0100
+
+[Channel H]
+Coupling: DC_50OHM
+Polarity: -1
+Range: 0.1
+Baseline Correction: False
+Timing: PEAK
+Trigger Enabled: False
+Trigger Type: LEVEL
+Trigger Direction: BELOW
+Threshold (V): -0.0100
