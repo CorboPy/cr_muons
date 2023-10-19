@@ -51,4 +51,8 @@ for i in range(len(channels)):
 
     #for twofold
     twofold_efficiency=(success_num_2/num_triggers_2)*100
+    print('\n Twofold efficiency = ',twofold_efficiency,' for channel %s' % channel)
+    
+    #for threefold
     threefold_efficiency = (success_num_3/num_triggers_3)*100
+    print('Threefold efficiency = ',threefold_efficiency,' for channel %s' % channel)
