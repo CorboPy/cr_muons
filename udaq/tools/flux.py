@@ -1,12 +1,13 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy import random
 import mplhep as hep
 import os
 #hep.style.use('LHCb2')
 
-def flux(number_of_muons,area,top_solid_angle,alpha,epsilon,time):
-    muon_flux = number_of_muons/(top_solid_angle*area*alpha*epsilon*time)
+def flux(number_of_muons,area,solid_angle,alpha,epsilon,time):
+    muon_flux = number_of_muons/(solid_angle*area*alpha*epsilon*time)
     return(muon_flux)
 
 def error(N,A,omega,alpha,epsilon,t,N_error,A_error,omega_error,alpha_error,epsilon_error,t_error):
@@ -23,26 +24,43 @@ def error(N,A,omega,alpha,epsilon,t,N_error,A_error,omega_error,alpha_error,epsi
 channels = ['A','B','C','D','E','F','G','H']
 df = pd.read_csv('C:/Users/alexc/Documents/#Uni/Physics with Astrophysics/YR 3/YR3 Labs/CR Experiment/Flux_CSV/Run0000.csv' )   #will need changing if not running on laptop
 
+# Initialising variables
 efficiencies = {'A':54.59/100,'B':76.36/100,'C':90.27/100,'D':20.02/100,'E':50.17/100,'F':61.28/100,'G':87.16/100,'H':2.24/100}     #decimal
 efficiencies_uncertainty = {'A':0.71,'B':0.72,'C':0.90,'D':0.58,'E':1.03,'F':1.13,'G':3.20,'H':0.30} #in percentages
+a=40.000e-2    # Scintillator length in m
+b=42.000e-2    # Scintillator width in m
+diag = np.sqrt(a**2 + b**2)
+scintillator_area = a*b
+d = 0.22 # In m, pm 0.5mm - height from top of C scintillator to top of A scintillator
+k= d/diag # Used in error prop later
+theta_max = np.pi/2 - np.arctan(k) # theta_max for solid angle
+epsilon = 0.215509 #efficiencies['A']*efficiencies['C']*efficiencies['E']*efficiencies['G'] #efficiency correction
+number_of_muons = df.index.size # Number of triggers 
+#print("\nN=",number_of_muons,"\n")  
+run_time = 19000 # Seconds
+deadtime = number_of_muons*(1*10**(-6))    # Dead time of 10ms per trigger event (captures per block = 1)
+solid_angle = - 2*np.pi*(((np.cos(theta_max))**3)/3 - ((np.cos(0))**3)/3) # Solid angle top scintillator, integral of (cos^2(theta)*sin(theta)), limits 0 - theta_max
+alpha = 0.7589 # Rough proportion of top scintilaltor solid angle as seen from bottom scintillator
 
-epsilon = 21.5509/100 #efficiencies['A']*efficiencies['C']*efficiencies['E']*efficiencies['G'] #efficiency correction
-number_of_muons = df.index.size     #number of triggers
-run_time = 19000 #seconds
-scintillator_area = 0.6**2 #m^2
-top_solid_angle = (np.pi**2)/2 #solid angle top scintillator
-alpha = 0.5 # rough proportion of top scintilaltor solid angle as seen from bottom scintillator, provided by supervisor
+# Errors
+d_err=0.5e-3    # In metres. See section 5.2 in onenote 
+a_err = b_err = 0.0005e-2   # Manufacturer uncertainty on a and b in m
+theta_error = 100*(( np.sqrt( ((d_err**2)*(1/(np.sqrt(a**2 + b**2)))**2) + ((a_err**2)*(-(d*a)/((a**2 + b**2)**(3/2)))**2) + ((b_err**2)*(-(d*b)/((a**2 + b**2)**(3/2)))**2)  ) )/k)  # Spits out percentage error
+print("\ntheta_max = (", theta_max, "pm", theta_max*theta_error/100, ") rad")
+N_error = 0 # Error on N is adopted into the epsilon efficiency correction 
+A_error = np.sqrt(((b**2)*(a_err**2)) + ((a**2)*(b_err**2)))  #in m^-2 
+omega_error = (theta_error/100)*solid_angle  # In str (derived from a,b and d)
+print("omega = (",solid_angle,"pm", omega_error,") str")
+alpha_error = 4.277508503790495e-05  # Error is derived from binomial std error on monte carlo simulation
+epsilon_error = 0.006314    # Propogation of uncertainties on the efficiencies (not in percentage error of a percentage!)
+t_error = deadtime  # Derived from dead time
 
-#error
-N_error = 0 #integer (if any?)
-A_error = 0  #in m^-2
-omega_error = 0  #in str (if any?)
-alpha_error = 0  #error is derived from measurements of apparatus? 
-epsilon_error = 0.6314/100    #propogation of uncertainties on the efficiencies (not in percentage error of a percentage!)
-t_error = 0  #time error (if any?)
+print("N=",number_of_muons)
+print("area = (",scintillator_area, "pm",A_error,") m^-2")
+print("alpha =",alpha,"pm",alpha_error)
+print("epsilon =",epsilon,"pm",epsilon_error)
+print("eff runtime = (",run_time,"pm",t_error, ") s")
 
-muonflux_error = error(number_of_muons, scintillator_area, top_solid_angle, alpha, epsilon, run_time, N_error, A_error, omega_error, alpha_error, epsilon_error, t_error)
-
-print("Muon flux = (",flux(number_of_muons,scintillator_area,top_solid_angle,alpha,epsilon,run_time),"pm",muonflux_error,") s^-1 str^-1 m^-2")
-
-#need to find uncertainties on N, A, omega, alpha, epsilon and time t.
+muonflux_error = error(number_of_muons, scintillator_area, solid_angle, alpha, epsilon, run_time, N_error, A_error, omega_error, alpha_error, epsilon_error, t_error)
+print("Muon flux = (",flux(number_of_muons,scintillator_area,solid_angle,alpha,epsilon,run_time),"pm",muonflux_error,") s^-1 str^-1 m^-2")
+print("Muon flux = (",flux(number_of_muons,scintillator_area,solid_angle,alpha,epsilon,run_time)*60,"pm",muonflux_error*60,") minuites^-1 str^-1 m^-2")
