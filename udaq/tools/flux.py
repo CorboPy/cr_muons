@@ -40,7 +40,7 @@ number_of_muons = df.index.size # Number of triggers
 run_time = 19000 # Seconds
 deadtime = number_of_muons*(1*10**(-3))    # Dead time of 10ms per trigger event (captures per block = 1)
 solid_angle = - 2*np.pi*(((np.cos(theta_max))**3)/3 - ((np.cos(0))**3)/3) # Solid angle top scintillator, integral of (cos^2(theta)*sin(theta)), limits 0 - theta_max
-alpha = 0.5200971940000001 # Rough proportion of top scintilaltor solid angle as seen from bottom scintillator
+alpha = 0.661721657 # Rough proportion of top scintilaltor solid angle as seen from bottom scintillator (averaged over 10 monte carlo runs)
 
 # Errors
 d_err=0.5e-3    # In metres. See section 5.2 in onenote 
@@ -51,7 +51,7 @@ N_error = 0 # Error on N is adopted into the epsilon efficiency correction
 A_error = np.sqrt(((b**2)*(a_err**2)) + ((a**2)*(b_err**2)))  #in m^-2 
 omega_error = (theta_error/100)*solid_angle  # In str (derived from a,b and d)
 print("omega = (",solid_angle,"pm", omega_error,") str")
-alpha_error = 0.009693722681282683  # Error is derived from std error on 10 monte carlo simulation runs
+alpha_error = 0.007132347409294789  # Error is derived from std error on 10 monte carlo simulation runs
 epsilon_error = 0.006314    # Propogation of uncertainties on the efficiencies (not in percentage error of a percentage!)
 t_error = deadtime  # Derived from dead time
 
