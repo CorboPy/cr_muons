@@ -6,15 +6,15 @@ import mplhep as hep
 hep.style.use('LHCb2')
 
 # Number of random points to sample
-N = 25
+N = 50
 N_2D = N**4
 
 # Initialize variables
 theta_max = np.pi/2 - np.arctan(0.22/(np.sqrt(0.409878**2 + 0.409878**2)))      # Trig calc for theta max assuming square scintillators of same area
 h=0.22 #m
 
-xvals = np.linspace(-0.409878/2,0.409878/2,N)     #0.409878 metres approximating a square with same area
-yvals = np.linspace(-0.409878/2,0.409878/2,N) 
+xvals = np.linspace(-0.40/2,0.40/2,N)     #0.409878 metres approximating a square with same area
+yvals = np.linspace(-0.420/2,0.420/2,N) 
 theta_vals = np.zeros(N)
 phi_vals = np.zeros(N)
 
@@ -37,7 +37,7 @@ for x in xvals:
         for theta in theta_vals:
             for phi in phi_vals:
                  
-                if (((h*np.tan(theta)*np.sin(phi))+x) <= abs(max(xvals))) and ((((h*np.tan(theta)*np.cos(phi)))+y) <= abs(max(yvals))):
+                if (-0.40/2 <= ((h*np.tan(theta)*np.sin(phi))+x) <= 0.40/2) and (-0.420/2 <= (((h*np.tan(theta)*np.cos(phi)))+y) <= 0.420/2):
                     count=count+1
 
 print("Successes:", count,". Failuires:",N_2D-count)    # N_2D instead of N because count goes like N**4
@@ -47,20 +47,20 @@ print("alpha=", count/N_2D, "pm", np.sqrt(((count/N_2D) * (1 - (count/N_2D)) )/ 
 x_arr = xvals + (h*np.tan(theta_vals)*np.sin(phi_vals))
 y_arr = yvals + (h*np.tan(theta_vals)*np.cos(phi_vals))
 
-font = {'fontname':'Calibri'}
-aperture = patch.Rectangle((-0.409878,-0.409878),2*0.409878,2*0.409878,fill=False,color='red')
+# font = {'fontname':'Calibri'}
+# aperture = patch.Rectangle((-0.409878,-0.409878),2*0.409878,2*0.409878,fill=False,color='red')
 
-plt.scatter(x_arr,y_arr,marker="x",color='black',label="vector trajectory")
-plt.xlabel("$x (m)$")
-plt.ylabel("$y (m)$")
-plt.legend(loc="upper right",frameon=True)
-plt.text(-0.4,0.36,"upper scintillator target",fontsize="xx-large",color='red',weight='bold',**font)
-plt.title("Example Monte Carlo method for N=%s vectors with origin (0,0) on lower scintillator" % N,fontsize="x-large",weight='bold')
-plt.locator_params(axis='both', nbins=5) 
+# plt.scatter(x_arr,y_arr,marker="x",color='black',label="vector trajectory")
+# plt.xlabel("$x (m)$")
+# plt.ylabel("$y (m)$")
+# plt.legend(loc="upper right",frameon=True)
+# plt.text(-0.4,0.36,"upper scintillator target",fontsize="xx-large",color='red',weight='bold',**font)
+# plt.title("Example Monte Carlo method for N=%s vectors with origin (0,0) on lower scintillator" % N,fontsize="x-large",weight='bold')
+# plt.locator_params(axis='both', nbins=5) 
 
-ax = plt.gca()
-ax.add_patch(aperture)
-ax.set_xlim(-0.7,0.7)
-ax.set_ylim(-0.7,0.7)
+# ax = plt.gca()
+# ax.add_patch(aperture)
+# ax.set_xlim(-0.7,0.7)
+# ax.set_ylim(-0.7,0.7)
 
-plt.show()
+# plt.show()

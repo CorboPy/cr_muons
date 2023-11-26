@@ -38,9 +38,9 @@ epsilon = 0.215509 #efficiencies['A']*efficiencies['C']*efficiencies['E']*effici
 number_of_muons = df.index.size # Number of triggers 
 #print("\nN=",number_of_muons,"\n")  
 run_time = 19000 # Seconds
-deadtime = number_of_muons*(1*10**(-6))    # Dead time of 10ms per trigger event (captures per block = 1)
+deadtime = number_of_muons*(1*10**(-3))    # Dead time of 10ms per trigger event (captures per block = 1)
 solid_angle = - 2*np.pi*(((np.cos(theta_max))**3)/3 - ((np.cos(0))**3)/3) # Solid angle top scintillator, integral of (cos^2(theta)*sin(theta)), limits 0 - theta_max
-alpha = 0.7589 # Rough proportion of top scintilaltor solid angle as seen from bottom scintillator
+alpha = 0.5200971940000001 # Rough proportion of top scintilaltor solid angle as seen from bottom scintillator
 
 # Errors
 d_err=0.5e-3    # In metres. See section 5.2 in onenote 
@@ -51,7 +51,7 @@ N_error = 0 # Error on N is adopted into the epsilon efficiency correction
 A_error = np.sqrt(((b**2)*(a_err**2)) + ((a**2)*(b_err**2)))  #in m^-2 
 omega_error = (theta_error/100)*solid_angle  # In str (derived from a,b and d)
 print("omega = (",solid_angle,"pm", omega_error,") str")
-alpha_error = 4.277508503790495e-05  # Error is derived from binomial std error on monte carlo simulation
+alpha_error = 0.009693722681282683  # Error is derived from std error on 10 monte carlo simulation runs
 epsilon_error = 0.006314    # Propogation of uncertainties on the efficiencies (not in percentage error of a percentage!)
 t_error = deadtime  # Derived from dead time
 
@@ -59,7 +59,7 @@ print("N=",number_of_muons)
 print("area = (",scintillator_area, "pm",A_error,") m^-2")
 print("alpha =",alpha,"pm",alpha_error)
 print("epsilon =",epsilon,"pm",epsilon_error)
-print("eff runtime = (",run_time,"pm",t_error, ") s")
+print("runtime = (",run_time,"pm",t_error, ") s")
 
 muonflux_error = error(number_of_muons, scintillator_area, solid_angle, alpha, epsilon, run_time, N_error, A_error, omega_error, alpha_error, epsilon_error, t_error)
 print("Muon flux = (",flux(number_of_muons,scintillator_area,solid_angle,alpha,epsilon,run_time),"pm",muonflux_error,") s^-1 str^-1 m^-2")
